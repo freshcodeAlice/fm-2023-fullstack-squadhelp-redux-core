@@ -166,13 +166,13 @@ router.post(
   chatController.removeChatFromCatalog,
 );
 
-router.post(
-  '/deleteCatalog',
+router.delete(
+  '/deleteCatalog/:catalogId',
   checkToken.checkToken,
   chatController.deleteCatalog,
 );
 
-router.post(
+router.get(
   '/getCatalogs',
   checkToken.checkToken,
   chatController.getCatalogs,
