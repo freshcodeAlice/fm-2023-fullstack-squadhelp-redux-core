@@ -1,7 +1,16 @@
-
+const {
+  Model
+} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Banks', {
+
+class Bank extends Model {
+  static associate(models) {
+
+  }
+}
+
+Bank.init({
     cardNumber: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -24,7 +33,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 0,
     },
-  }, {
+}, 
+  {
+    sequelize,
+    modelName: 'Bank',
+    tableName: 'banks',
     timestamps: false,
-  });
+    underscored: true
+})
+  return Bank;
 };

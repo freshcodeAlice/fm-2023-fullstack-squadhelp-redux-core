@@ -1,7 +1,31 @@
 
+const {
+  Model
+} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const Offer = sequelize.define('Offers', {
+
+  class Offer extends Model {
+    static associate(models) {
+
+      Offer.belongsTo(models.User,
+        {
+          foreignKey: 'userId',
+          sourceKey: 'id'
+        });
+      Offer.belongsTo(models.Contest,
+        {
+          foreignKey: 'contestId',
+          sourceKey: 'id'
+        });
+      Offer.hasOne(models.Rating, {
+        foreignKey: 'offerId',
+        targetKey: 'id'
+      })
+    }
+  }
+
+  Offer.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -35,18 +59,15 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'pending',
     },
   },
-  {
-    timestamps: false,
-  });
-
-  Offer.associate = function (models) {
-    Offer.belongsTo(models.User, { foreignKey: 'user_id', sourceKey: 'id' });
-  };
-
-  Offer.associate = function (models) {
-    Offer.belongsTo(models.Contest,
-      { foreignKey: 'contest_id', sourceKey: 'id' });
-  };
-
+    {
+      sequelize,
+      modelName: 'Offer',
+      tableName: 'offers',
+      timestamps: false,
+      underscored: true
+    })
   return Offer;
 };
+
+
+
