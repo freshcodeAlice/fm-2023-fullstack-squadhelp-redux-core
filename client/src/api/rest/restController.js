@@ -40,3 +40,7 @@ export const getContestById = (data) => http.get('getContestById', {
     contestId: data.contestId,
   },
 });
+
+
+
+export const getTransactions = () => http.get('transactions');

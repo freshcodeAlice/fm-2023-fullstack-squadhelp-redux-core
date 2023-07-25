@@ -3,6 +3,7 @@ import ACTION from '../actions/actionTypes';
 import history from '../browserHistory';
 import CONSTANTS from '../constants';
 import * as restController from '../api/rest/restController';
+import * as actionCreators from '../actions/actionCreator';
 
 export function* paymentSaga(action) {
   yield put({ type: ACTION.PAYMENT_ACTION_REQUEST });
@@ -25,5 +26,16 @@ export function* cashoutSaga(action) {
     yield put({ type: ACTION.CHANGE_PROFILE_MODE_VIEW, data: CONSTANTS.USER_INFO_MODE });
   } catch (e) {
     yield put({ type: ACTION.PAYMENT_ACTION_ERROR, error: e.response });
+  }
+}
+
+
+
+export function* transactionSaga(action) {
+  try {
+    const {data: {data}} = yield restController.getTransactions();
+    yield put(actionCreators.getUserTransactionsSuccess(data));
+  } catch(error) {
+    yield put(actionCreators.getUserTransactionsError(error));
   }
 }

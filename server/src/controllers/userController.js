@@ -141,7 +141,13 @@ module.exports.payment = async (req, res, next) => {
       });
     });
     await db.Contest.bulkCreate(req.body.contests, transaction);
+    // TODO: повертати (і приймати масив id, проходитись по цьому масиву і створювати Транзакцію на кожен контест окремо)
     transaction.commit();
+    const trans = await db.Transaction.create({
+        userId: req.tokenData.userId,
+        amount: req.body.price / req.body.contests.length,
+        type: 'expence'
+    });
     res.send();
   } catch (err) {
     transaction.rollback();
@@ -198,6 +204,11 @@ module.exports.cashout = async (req, res, next) => {
     },
     transaction);
     transaction.commit();
+    const trans = await db.Transaction.create({
+      userId: req.tokenData.userId,
+      amount: req.body.sum,
+      type: 'cashout'
+  });
     res.send({ balance: updatedUser.balance });
   } catch (err) {
     transaction.rollback();

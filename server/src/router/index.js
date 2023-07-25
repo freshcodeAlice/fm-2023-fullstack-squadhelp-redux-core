@@ -3,6 +3,7 @@ const basicMiddlewares = require('../middlewares/basicMiddlewares');
 const hashPass = require('../middlewares/hashPassMiddle');
 const userController = require('../controllers/userController');
 const contestController = require('../controllers/contestController');
+const transactionController = require('../controllers/transactionController');
 const checkToken = require('../middlewares/checkToken');
 const validators = require('../middlewares/validators');
 const chatController = require('../controllers/chatController');
@@ -177,5 +178,11 @@ router.get(
   checkToken.checkToken,
   chatController.getCatalogs,
 );
+
+router.get('/transactions', 
+  checkToken.checkToken,
+  transactionController.getUserTransactions
+)
+
 
 module.exports = router;
